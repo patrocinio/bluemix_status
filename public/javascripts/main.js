@@ -14,6 +14,7 @@ $(document).ready(function(){
     dom: 'lrti'
   });
 
+  // Search for the datatable
   $('form.navbar-form input').keyup(function(){
     $('#status').dataTable().api().search(this.value).draw();
   });
@@ -159,7 +160,6 @@ $(document).ready(function(){
     });
   }
 
-
   var displayInstances = function(){
     var tr = $(this),
       row = $('#status').dataTable().api().row(tr);
@@ -194,9 +194,95 @@ $(document).ready(function(){
         row.child(instanceTable).show();
       }
     }
-  }
+  };
 
   $('#status tbody').on('click', 'tr', displayInstances);
+
+  var displayOrgStats = function(org){
+    var section = $('div.charts').empty(),
+      row = $('<div/>', {class: 'row'}).appendTo(section);
+
+    var memory = $('<div/>', {class:'col-xs-3 col-sm-3 charts'});
+    $('<h2/>', {
+      text: numeral(org.memory).format('0.0 b')
+    }).appendTo(memory);
+    $('<h4/>', {text: 'Memory Usage'}).appendTo(memory);
+    $(memory).appendTo(row);
+
+    var spaces = $('<div/>', {class:'col-xs-3 col-sm-3 charts'});
+    $('<h2/>', {
+      text: org.spaces.length
+    }).appendTo(spaces);
+    $('<h4/>', {text: '№ of Spaces'}).appendTo(spaces);
+    $(spaces).appendTo(row);
+
+    var apps = $('<div/>', {class:'col-xs-3 col-sm-3 charts'}),
+      count = org.spaces.reduce(function(total, space){
+        return total + space.app_count;
+      }, 0);
+    $('<h2/>', {text: count}).appendTo(apps);
+    $('<h4/>', {text: '№ of Apps'}).appendTo(apps);
+    $(apps).appendTo(row);
+  }
+
+  var displaySpaceStats = function(space) {
+    var section = $('div.charts').empty(),
+      row = $('<div/>', {class: 'row'}).appendTo(section);
+
+    var memory = $('<div/>', {class:'col-xs-3 col-sm-3 charts'}),
+      memBytes = (space.mem_dev_total + space.mem_prod_total) * 1024 * 1024; // Memory in Bytes
+    $('<h2/>', {
+      text: numeral(memBytes).format('0.0 b')
+    }).appendTo(memory);
+    $('<h4/>', {text: 'Memory Usage'}).appendTo(memory);
+    $(memory).appendTo(row);
+
+    var apps = $('<div/>', {class:'col-xs-3 col-sm-3 charts'});
+    $('<h2/>', {text: space.app_count}).appendTo(apps);
+    $('<h4/>', {text: '№ of Apps'}).appendTo(apps);
+    $(apps).appendTo(row);
+  }
+
+  // Navigation Sidebar
+  $.get('/api/bluemix/orgs', function(orgs){
+    $.each(orgs, function(i, org){
+      // List Orgs
+      var orgLi = $('<li/>').appendTo('ul.nav-sidebar'),
+        a = $('<a/>', {
+        href: '#',
+        text: org.name,
+        click: function(){
+          var org = $(this).data();
+          displayOrgStats(org);
+          $('h1.page-header').text(org.name);
+          $(this).parent().siblings('li').find('ul').slideUp();
+          $(this).parent().siblings('li').removeClass('active');
+
+          $(this).parent().addClass('active');
+          $(this).parent().find('ul').slideToggle();
+        }
+      }).appendTo(orgLi);
+      $(a).data(org);
+
+      // List Spaces nested in Orgs
+      var spaceUl = $('<ul/>').hide().appendTo(orgLi);
+      $.each(orgs[i].spaces, function(i, space){
+        var spaceLi = $('<li/>').appendTo(spaceUl),
+          a = $('<a/>', {
+          href: '#',
+          class: 'text-muted',
+          text: space.name,
+          click: function(){
+            var space = $(this).data();
+            displaySpaceStats(space);
+            $('h1.page-header').text(space.name);
+          }
+        }).appendTo(spaceLi);
+        $(a).data(space);
+      });
+    });
+    $('ul.nav.nav-sidebar').find('a').first().trigger('click');
+  });
 
   setInterval( function () {
     table.ajax.reload();

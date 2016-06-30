@@ -8,7 +8,7 @@ var express = require('express'),
 router.get('/', function(req, res, next) {
   bluemix.getApps().then( (data) => {
     res.render('index', {
-      title: 'Bluemix Status',
+      title: 'Kaiser Bluemix Status',
     });
   })
 });
@@ -56,5 +56,12 @@ router.get('/api/bluemix', function(req, res, next) {
     });
   });
 });
+
+router.get('/api/bluemix/orgs/', function(req, res, next){
+  bluemix.getOrgs().then((data) => {
+    res.send(data);
+  });
+});
+
 
 module.exports = router;

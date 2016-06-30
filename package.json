@@ -1,5 +1,5 @@
 {
-  "name": "status",
+  "name": "BluemixStatus",
   "version": "0.0.0",
   "private": true,
   "scripts": {
