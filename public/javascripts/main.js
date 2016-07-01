@@ -2,7 +2,7 @@ $(document).ready(function(){
 
   const RELOAD = 1000*60;  // millis in which data will reload
 
-  var table = $('#status').DataTable({
+  $('#status').DataTable({
     columns: [
         {data: 'name'},
         {data: 'instance_count'},
@@ -282,6 +282,6 @@ $(document).ready(function(){
   });
 
   setInterval( function () {
-    table.ajax.reload();
+    $('#status').dataTable().ajax.reload();
   }, RELOAD );
 });
