@@ -3,10 +3,8 @@ $(document).ready(function(){
   const RELOAD = 1000*60;  // millis in which data will reload
 
   var table = $('#status').DataTable({
-    ajax: '/api/bluemix',
     columns: [
         {data: 'name'},
-        {data: 'space.name'},
         {data: 'instance_count'},
         {data: 'state'}
       ],
@@ -84,10 +82,6 @@ $(document).ready(function(){
     var row = $('<div/>', {class: 'row'}).appendTo(section),
       title = $('<h3/>', {
         text: 'Application: ' + app.name.toUpperCase()
-      }).appendTo(row),
-      spaceTxt = $('<div/>', {
-        class: 'text-muted',
-        text: 'Space: ' + app.space.name.toUpperCase()
       }).appendTo(row),
       instanceTxt = $('<div/>', {
         class: 'text-muted',
@@ -244,7 +238,7 @@ $(document).ready(function(){
   }
 
   // Navigation Sidebar
-  $.get('/api/bluemix/orgs', function(orgs){
+  $.get('/api/bluemix/org', function(orgs){
     $.each(orgs, function(i, org){
       // List Orgs
       var orgLi = $('<li/>').appendTo('ul.nav-sidebar'),
@@ -273,9 +267,12 @@ $(document).ready(function(){
           class: 'text-muted',
           text: space.name,
           click: function(){
-            var space = $(this).data();
+            var org = $(this).parents('li').find('a').first().data(),
+              space = $(this).data(),
+              url = '/api/bluemix/space/' + space.guid + '/apps';
+            $('#status').dataTable().api().ajax.url(url).load();
             displaySpaceStats(space);
-            $('h1.page-header').text(space.name);
+            $('h1.page-header').text(org.name + " - " +space.name);
           }
         }).appendTo(spaceLi);
         $(a).data(space);
