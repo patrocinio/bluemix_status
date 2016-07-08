@@ -22,4 +22,17 @@ nodemon
 
 ### Bluemix
 
-To be continued...
+The following command will create the application "BluemixStatus", based on the local manifest.yml.  The application can be renamed as needed.
+
+`cf push BluemixStatus`
+
+#### Environment Variables
+User-defined environment variables should be set by:
+
+```shell
+cf set-env BluemixStatus CLDSTS_BXD_USER bluxmix_admin@example.com
+cf set-env BluemixStatus CLDSTS_BXD_PASS BLUEMIX_ADMIN_PASSWORD
+cf set-env BluemixStatus CLDSTS_BXD_URL https://api.ng.bluxmix.com
+```
+
+Additionally, environment variables can also be set in the `manifest.yml`; however the user-defined variables should not be checked into the repository for security reasons.
