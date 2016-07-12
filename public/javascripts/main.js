@@ -200,7 +200,7 @@ $(document).ready(function(){
     $('<h2/>', {
       text: numeral(org.memory).format('0.0 b')
     }).appendTo(memory);
-    $('<h4/>', {text: 'Memory Usage'}).appendTo(memory);
+    $('<h4/>', {text: 'Memory Quota'}).appendTo(memory);
     $(memory).appendTo(row);
 
     var spaces = $('<div/>', {class:'col-xs-3 col-sm-3 charts'});
