@@ -248,6 +248,7 @@ $(document).ready(function(){
         click: function(){
           var org = $(this).data();
           displayOrgStats(org);
+          $('#status').dataTable().api().clear().draw();
           $('h1.page-header').text(org.name);
           $(this).parent().siblings('li').find('ul').slideUp();
           $(this).parent().siblings('li').removeClass('active');
