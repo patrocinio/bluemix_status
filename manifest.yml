@@ -1,6 +1,5 @@
 applications:
 - name: BluemixStatus
-  host: bluemixstatus # rename as necessary.
   instances: 1
   memory: 512M
   disk_quota: 512M
