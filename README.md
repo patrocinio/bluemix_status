@@ -1,5 +1,9 @@
 # Bluemix Status
 
+## Requirements
+
+* Node.js ~> `4.4.x`
+
 ## Configuration
 Required environment variables:
 * `CLDSTS_BXD_USER` - The Username of a Bluemix Administrator
@@ -9,6 +13,9 @@ Required environment variables:
 ## Running
 
 ### Local Development
+
+#### Nodemon
+The recommended way of starting the application is with `nodemon` as follows:
 ```
 npm install && \
 CLDSTS_BXD_USER=bluxmix_admin@ibm.com \
@@ -18,8 +25,26 @@ DEBUG=BluemixStatus:* \
 nodemon
 ```
 
-***NOTE***: `nodemon` can be installed by `npm install -g nodemon`
+If you do not have nodemon installed, it can be installed by `npm install -g nodemon`
 
+#### Node
+If you do not want to use `nodemon`, the application can be started by one of two ways:
+
+```
+npm install && \
+CLDSTS_BXD_USER=bluxmix_admin@ibm.com \
+CLDSTS_BXD_PASS=********** \
+CLDSTS_BXD_URL=https://api.w3ibm.bluemix.net \
+npm start
+```
+
+```
+npm install && \
+CLDSTS_BXD_USER=bluxmix_admin@ibm.com \
+CLDSTS_BXD_PASS=********** \
+CLDSTS_BXD_URL=https://api.w3ibm.bluemix.net \
+node ./bin/www
+```
 ### Bluemix
 
 The following command will create the application "BluemixStatus", based on the local manifest.yml.  The application can be renamed as needed.
