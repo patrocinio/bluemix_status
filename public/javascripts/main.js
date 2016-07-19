@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
-  const RELOAD = 1000*60;  // millis in which data will reload
+  const RELOAD = 1000*10;  // millis in which data will reload
+  var self = this;
 
   $('#status').DataTable({
     columns: [
@@ -249,6 +250,7 @@ $(document).ready(function(){
           var org = $(this).data();
           displayOrgStats(org);
           $('#status').dataTable().api().clear().draw();
+          clearTimeout(self.reload);
           $('h1.page-header').text(org.name);
           $(this).parent().siblings('li').find('ul').slideUp();
           $(this).parent().siblings('li').removeClass('active');
@@ -271,7 +273,9 @@ $(document).ready(function(){
             var org = $(this).parents('li').find('a').first().data(),
               space = $(this).data(),
               url = '/api/bluemix/space/' + space.guid + '/apps';
+            clearTimeout(self.reload);
             $('#status').dataTable().api().ajax.url(url).load();
+            self.reload = setInterval($('#status').dataTable().api().ajax.reload, RELOAD );
             displaySpaceStats(space);
             $('h1.page-header').text(org.name + " - " +space.name);
           }
@@ -282,7 +286,4 @@ $(document).ready(function(){
     $('ul.nav.nav-sidebar').find('a').first().trigger('click');
   });
 
-  setInterval( function () {
-    $('#status').dataTable().ajax.reload();
-  }, RELOAD );
 });
