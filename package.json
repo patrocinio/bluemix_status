@@ -8,7 +8,7 @@
   "dependencies": {
     "bluebird": "^3.4.1",
     "body-parser": "~1.15.1",
-    "cf-nodejs-client": "git://github.com/IBM-Bluemix/cf-nodejs-client.git#v0.13.0",
+    "cf-nodejs-client": "^0.13.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "~4.13.4",
