@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-  const RELOAD = 1000*10;  // millis in which data will reload
+  const RELOAD = 1000*60;  // millis in which data will reload
   var self = this;
 
   $('#status').DataTable({
