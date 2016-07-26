@@ -57,7 +57,7 @@ User-defined environment variables should be set by:
 ```shell
 cf set-env BluemixStatus CLDSTS_BXD_USER bluxmix_admin@example.com
 cf set-env BluemixStatus CLDSTS_BXD_PASS BLUEMIX_ADMIN_PASSWORD
-cf set-env BluemixStatus CLDSTS_BXD_URL https://api.ng.bluemix.com
+cf set-env BluemixStatus CLDSTS_BXD_URL https://api.ng.bluemix.net
 ```
 
 Additionally, environment variables can also be set in the `manifest.yml`; however the user-defined variables should not be checked into the repository for security reasons.
